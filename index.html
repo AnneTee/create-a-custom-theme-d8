@@ -15,7 +15,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
 
 		<link rel="stylesheet" href="css/reveal.css">
-		<link rel="stylesheet" href="css/theme/moon.css" id="theme">
+		<link rel="stylesheet" href="css/theme/purple-moon.css" id="theme">
 
 		<!-- Code syntax highlighting -->
 		<link rel="stylesheet" href="lib/css/zenburn.css">
@@ -43,7 +43,7 @@
 				<section>
 					<h1>Building a custom theme in Drupal 8</h1>
 					<h3>Based on the Classy base theme</h3>
-					<p>
+					<p class="centered">
 						<small>Presented by Anne Tomasevich</small>
 					</p>
 				</section>
@@ -61,6 +61,11 @@
 
 				<!-- 1A: What's new in Drupal 8 -->
 				<section>
+					<section>
+						<h2>What's changing?</h2>
+						<p class="centered"><small>...and how do I, a person who probably doesn't like change, cope with these changes...</small></p>
+					</section>
+
 					<section>
 						<h2>What's new in Drupal 8?</h2>
 						<ul>
@@ -184,13 +189,35 @@ db_query('DROP TABLE {users}');
 
 				<!-- SECTION 2: BUILDING A CUSTOM THEME -->
 				<section>
-					<h2>Folder structure</h2>
-	
+					<h2>Let's build this thing</h2>
+				</section>
+
+				<section>
+					<h2>Create a theme folder</h2>
+					<img width="660" height="255" src="images/theme-folder-location.png" alt="Screenshot of theme folder location">
+					<p>Drupal core now resides in its own folder. Contributed and custom modules and themes are in the <code>modules</code> and <code>themes</code> folders, respectively.</p>
+					<p>My custom theme folder is called <code>mappy</code>.</p>
+					<p>Don't forget to create a <code>custom</code> folder for your custom theme!</p>
 				</section>
 
 				<section>
 					<h2>Create a .into.yml file</h2>
-	
+					<pre><code data-trim>
+# mappy.info.yml
+name: Mappy
+type: theme
+description: 'D8 Theme for a basic leaflet site.'
+core: 8.x
+base theme: classy
+libraries:
+ - mappy/global-styling
+ - mappy/leaflet
+regions:
+  navbar: 'Top Navigation Bar'
+  content: Content
+  sidebar: 'Sidebar'
+  footer: 'Footer'
+					</code></pre>
 				</section>
 
 				<section>
