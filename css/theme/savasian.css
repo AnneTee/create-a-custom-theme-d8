@@ -298,9 +298,26 @@ body {
   margin-bottom: 15px; }
 .reveal .centered {
   text-align: center; }
+.reveal .caption {
+  margin-top: -15px; }
+.reveal .no-border {
+  background-color: #14133b;
+  border: none; }
 .reveal .fuschia {
   color: #9e023b; }
 .reveal .compact-list li {
   margin-bottom: 5px; }
 .reveal .its-happening {
   margin-left: 50px; }
+.reveal .savas {
+  display: inline-block;
+  margin-left: 20px;
+  margin-top: 40px;
+  vertical-align: top; }
+.reveal .durham {
+  display: inline-block;
+  margin-right: 20px; }
+  .reveal .durham p {
+    font-size: 0.8em;
+    margin-top: -20px;
+    text-align: center; }

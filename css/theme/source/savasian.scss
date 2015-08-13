@@ -104,11 +104,36 @@ body {
 
   .centered { text-align: center; }
 
+  .caption { margin-top: -15px; }
+
+  .no-border {
+    background-color: $backgroundColor;
+    border: none;
+  }
+
   .fuschia { color: $fuschia; }
 
   .compact-list li { margin-bottom: 5px; }
 
   .its-happening { margin-left: 50px; }
+
+  .savas {
+    display: inline-block;
+    margin-left: 20px;
+    margin-top: 40px;
+    vertical-align: top;
+  }
+
+  .durham {
+    display: inline-block;
+    margin-right: 20px;
+
+    p {
+      font-size: .8em;
+      margin-top: -20px;
+      text-align: center;
+    }
+  }
 }
 
 

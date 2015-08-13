@@ -54,6 +54,19 @@
 				</section>
 
 				<section>
+					<h2>Introduction</h2>
+					<p class="centered">This is the part where I talk about myself</p>
+					<div class="durham">
+						<img width="300" src="images/durham.jpg" alt="Durham skyline by Jessie Gladin Kramer">
+						<p><small>Photo by <a href="http://jgkphotography.com/index2.php#/home/">Jessie Gladdek</a></small></p>
+					</div>
+					<div class="savas">
+						<img class="no-border" width="150" height="283" src="images/owl.png" alt="Savas owl logo"><br>
+						<a href="http://savaslabs.com">savaslabs.com</a>
+					</div>
+				</section>
+
+				<section>
 					<h2>Agenda</h2>
 					<ul>
 						<li>What's changing?</li>
@@ -61,6 +74,19 @@
 						<li>Twig basics and debugging</li>
 					</ul>
 				</section>
+
+				<section>
+					<h2>Let's start from the very beginning</h2>
+					<h3 class="orange">What is theming?</h3>
+					<blockquote>Themes allow you to change the look and feel of your Drupal site.</blockquote>
+					<p class="centered"> - Someone who's good at being very general</p>
+				</section>
+
+				<section>
+					<h2>Why would you use Drupal 8 now?!</h2>
+					<a href="https://drupalreleasedate.com/">And when is it coming out?</a>
+				</section>
+
 				<!-- SECTION 1: WHAT'S CHANGING -->
 
 				<!-- 1A: What's new in Drupal 8 -->
@@ -200,7 +226,7 @@
 
 				<section>
 					<h2>Create a theme folder</h2>
-					<img width="660" height="255" src="images/theme-folder-location.png" alt="Screenshot of theme folder location">
+					<img width="800" src="images/theme-folder-location.png" alt="Screenshot of theme folder location">
 					<ul>
 						<li>Drupal core now resides in its own folder. Contributed and custom modules and themes are in the <code>modules</code> and <code>themes</code> folders, respectively.</li>
 						<li>Don't forget to create a <code>custom</code> folder for your custom theme!</li>
@@ -240,7 +266,7 @@ regions:
 				</section>
 
 				<section>
-					<h2>Create a .into.yml file</h2>
+					<h2>Create a .info.yml file</h2>
 					<pre><code data-trim>
 # mappy.info.yml
 name: Mappy
@@ -279,15 +305,7 @@ libraries:
 					</code></pre>
 					<ul>
 						<li>In D8, assets can be added in a few different ways: globally, per-template, per-page, and more.</li>
-						<li>Since this is a small site and we need our libraries on every page, we're adding them globally.</li>
-					</ul>
-				</section>
-
-				<section>
-					<h2>Adding assets to your site</h2>
-					<ul>
-						<li>All libraries must be defined in your <code>.libraries.yml</code> file.</li>
-						<li>Visit <a href="https://www.drupal.org/developing/api/8/assets">drupal.org</a> for more information on methods for adding assets.</li>
+						<li>All libraries must be defined in your <code>*.libraries.yml</code> file.</li>
 					</ul>
 				</section>
 
@@ -311,6 +329,20 @@ leaflet:
     - core/jquery
 					</code></pre>
 					<p>Note that jQuery is listed as a dependency of the Leaflet library. Since jQuery is no longer loaded automatically on every page, it must be explicitly required.</p>
+				</section>
+
+				<section>
+					<h2>Adding assets to your site</h2>
+					<pre><code data-trim>
+# mappy.info.yml
+libraries:
+ - mappy/global-styling
+ - mappy/leaflet
+					</code></pre>
+					<ul>
+						<li>Since this is a small site and we need our libraries on every page, we're adding them globally.</li>
+						<li>Visit <a href="https://www.drupal.org/developing/api/8/assets">drupal.org</a> for more information on methods for adding assets.</li>
+					</ul>
 				</section>
 
 				<section>
@@ -359,6 +391,8 @@ mappy.wide:
 					<ul>
 						<li>In our theme's current state, we're using Classy's default template files.</li>
 						<li>If we want to override them, it's time to learn some Twig.</li>
+						<div class="centered"><img width="291" height="299" src="images/will-smith.png" alt="Young Will Smith"></div>
+						<p class="centered caption"><small>If one more person makes a "Gettin' Twiggy with it" joke...</small></p>
 					</ul>
 				</section>
 
@@ -366,7 +400,7 @@ mappy.wide:
 					<h2>Intro to Twig</h2>
 					<ul>
 						<li><a href="http://twig.sensiolabs.org/doc/templates.html">Twig</a> is a template engine with syntax similar to Django, Jinja, and Liquid.</li>
-						<li>It simplifies template creation with clean syntax and useful build-in filters, functions, and tags.</li>
+						<li>It simplifies template creation with clean syntax and useful built-in filters, functions, and tags.</li>
 						<li>In a Drupal template file (now with the extention .html.twig), anything between curly braces is Twig.</li>
 					</ul>
 				</section>
@@ -384,9 +418,9 @@ mappy.wide:
 					<p>In D7 we render content like so:</p>
 					<pre><code data-trim>&lt;?php print render($page['sidebar']); ?&gt;</code></pre>
 					<p>Printing variables in D8 is as easy as including them inside double curly braces:</p>
-					<pre><code data-trim>
-// In page--front.html.twig
-// Print the sidebar region.
+					<pre><code class="jinja" data-trim>
+{# In page--front.html.twig #}
+{# Print the sidebar region. #}
 
   {{ page.sidebar }}
 					</code></pre>
@@ -395,9 +429,9 @@ mappy.wide:
 				<section>
 					<h2>Printing variables with special characters</h2>
 					<p>If a variable name contains special characters, use Twig's subscript syntax (which will look familiar to seasoned Drupalers).</p>
-					<pre><code data-trim>
-// In page--front.html.twig
-// Print the page type.
+					<pre><code class="jinja" data-trim>
+{# In page--front.html.twig #}
+{# Print the page type. #}
 
   {{ page['#type'] }}
 					</code></pre>
@@ -408,8 +442,8 @@ mappy.wide:
 					<h2>Filters</h2>
 					<p>Twig comes with many built-in filters that variables are passed to via the pipe character.</p>
 					<p>Here's the date filter:</p>
-					<pre><code data-trim>
-	// Format the post date.
+					<pre><code class="jinja" data-trim>
+	{# Format the post date. #}
 
   {{ post.published|date("Y-m-d") }}
 					</code></pre>
@@ -419,8 +453,8 @@ mappy.wide:
 					<h2>Drupal-specific filters</h2>
 					<p>Check them out <a href="https://www.drupal.org/node/2357633">here.</a></p>
 					<p>Remember our old friend t()?</p>
-					<pre><code data-trim>
-	// Run an ARIA label through t()
+					<pre><code class="jinja" data-trim>
+	{# Run an ARIA label through t() #}
 
   &lt;nav class="tabs" role="navigation" aria-label="{{ 'Tabs'|t }}"&gt;
 					</code></pre>
@@ -430,7 +464,7 @@ mappy.wide:
 					<h2>Functions</h2>
 					<p>Twig also comes with various functions that can be used in double curly braces.</p>
 					<p>Here's the cycle function doing some very important work:</p>
-					<pre><code data-trim>
+					<pre><code class="jinja" data-trim>
 {% set fruits = ['apple', 'orange', 'banana'] %}
 
 {% for i in 0..10 %}
@@ -442,9 +476,9 @@ mappy.wide:
 				<section>
 					<h2>Tags</h2>
 					<p>Used for control flow and <a href="http://twig.sensiolabs.org/doc/tags/set.html">other fun things.</a></p>
-					<pre><code data-trim>
-// From Bartik's page.html.twig
-// If there are tabs, output them.
+					<pre><code class="jinja" data-trim>
+{# From Bartik's page.html.twig #}
+{# If there are tabs, output them. #}
 
   {% if tabs %}
     <nav class="tabs" role="navigation" aria-label="{{ 'Tabs'|t }}">
@@ -458,6 +492,7 @@ mappy.wide:
 				<section>
 					<h2>Get psyched</h2>
 					<p class="centered">Make sure you check out the <a href="https://www.drupal.org/node/1823416">Twig coding standards!</a></p>
+					<div class="centered"><img width="251" height="373" src="images/dries.png" alt="Dries doge meme"></div>
 				</section>
 
 				<section>
@@ -541,14 +576,14 @@ $settings['cache']['bins']['render'] = 'cache.backend.null';
 				<section>
 					<h2>dump( )</h2>
 					<p>With Twig debugging turned on, we can use the Twig function <code>dump()</code>.</p>
-					<pre><code data-trim>
-// In a template file
-// Print out all variables on the page.
+					<pre><code class="jinja" data-trim>
+{# In a template file #}
+{# Print out all variables on the page. #}
 
   {{ dump() }}
 
 
-// Print the page's base path.
+{# Print the page's base path. #}
 
   {{ dump(base_path) }}
 					</code></pre>
@@ -557,9 +592,9 @@ $settings['cache']['bins']['render'] = 'cache.backend.null';
 				<section>
 					<h2>Even better: kint( )</h2>
 					<p>Install the Devel and Devel Kint modules to use <code>kint()</code> in the same way, but with a pretty, expandable array instead.</p>
-					<pre><code data-trim>
-// In a template file
-// Print out all variables on the page.
+					<pre><code class="jinja" data-trim>
+{# In a template file #}
+{# Print out all variables on the page. #}
 
   {{ kint() }}
 					</code></pre>
@@ -578,10 +613,6 @@ $settings['cache']['bins']['render'] = 'cache.backend.null';
 						<li><a href="https://www.drupal.org/node/1823416">Twig coding standards (drupal.org)</a></li>
 						<li><a href="https://drupalize.me/blog/201405/lets-debug-twig-drupal-8">Twig debugging and devel (drupalize.me)</a></li>
 					</ul>
-				</section>
-
-				<section>
-					<h2>Questions?</h2>
 				</section>
 				<!-- END SECTION 3 -->
 
