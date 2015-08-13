@@ -32,6 +32,13 @@
 		<!--[if lt IE 9]>
 		<script src="lib/js/html5shiv.js"></script>
 		<![endif]-->
+
+		<!-- Put this in _base.scss:
+			.xdebug-var-dump,
+			.kint {
+			  margin-top: 100px !important;
+			}
+		-->
 	</head>
 
 	<body>
@@ -42,10 +49,8 @@
 			<div class="slides">
 				<section>
 					<h1>Building a custom theme in Drupal 8</h1>
-					<h3>Based on the Classy base theme</h3>
-					<p class="centered">
-						<small>Presentation by Anne Tomasevich</small>
-					</p>
+					<h3 class="fuschia">Based on the Classy base theme</h3><br>
+					<p class="centered">Presentation by Anne Tomasevich</p>
 				</section>
 
 				<section>
@@ -56,7 +61,6 @@
 						<li>Twig basics and debugging</li>
 					</ul>
 				</section>
-
 				<!-- SECTION 1: WHAT'S CHANGING -->
 
 				<!-- 1A: What's new in Drupal 8 -->
@@ -69,10 +73,15 @@
 					<section>
 						<h2>What's new in Drupal 8?</h2>
 						<ul>
-							<li>Twig, a template engine by SensioLabs, is used inside template files in lieu of PHP</li>
-							<li>Classy, a new base theme, is introduced</li>
-							<li>template.php becomes the slightly better-named [theme-name].theme. Maybe we’ll finally get theme.php in Drupal 9?</li>
+							<li>Twig, a template engine by SensioLabs</li>
+							<li>Classy, a new base theme</li>
+							<li><code>template.php</code> becomes <code>[theme-name].theme</code>. (Dear Drupal gods, can we please have <code>theme.php</code>?)</li>
 						</ul>
+						<aside class="notes">
+							Twig is replacing PHPTemplate is the template engine, meaning no more PHP inside template files.</br>
+							Classy<br>
+							Maybe we’ll finally get theme.php in Drupal 9?
+						</aside>
 					</section>
 
 					<section>
@@ -87,7 +96,13 @@
 						<h2>What's new in Drupal 8?</h2>
 						<ul>
 							<li>Support for IE8 and below is dropped meaning the use of jQuery 2.0, HTML5, and CSS3 (including pseudo selectors) are now supported</li>
-							<li>CSS: far fewer IDs are used, default classes are no longer in core but are moved to Classy, CSS file structure now uses SMACSS and class names follow the BEM format</li>
+							<li>CSS:
+								<ul>
+									<li>Far fewer IDs are used</li>
+									<li>CSS file structure now uses <a href="https://smacss.com/">SMACSS</a></li>
+									<li>Default class names follow the <a href="https://en.bem.info/">BEM</a> format</li>
+								</ul>
+							</li>
 							<li>CSS and JS files are attached to pages differently</li>
 						</ul>
 					</section>
@@ -103,20 +118,12 @@
 				<section>
 					<section>
 						<h2>Why all the changes?</h2>
-						<h3>In summary...</h3>
-						<ol>
-							<li>So everyone can use Drupal</li>
-							<li>To make Drupal more secure, more flexible, more current, more organized, and more semantic</li>
-						</ul>
-					</section>
-
-					<section>
-						<h2>Why all the changes?</h2>
 						<h3>Accessibility to non-Drupalers</h3>
 						<ul>
 							<li>Fewer Drupal-specific conventions and more popular, well-documented frameworks (such as Twig), meaning non-Drupalers can jump in much more quickly.</li>
-							<li>D8 themers don’t need to know PHP to whip up a theme.</li>
+							<li>D8 themers don’t need to know PHP to whip up a theme.*</li>
 						</ul>
+						<p><small>* I mean kinda ¯\_(ツ)_/¯</small></p>
 					</section>
 
 					<section>
@@ -129,28 +136,29 @@
 
 						<pre><code>&lt;?php db_query('DROP TABLE {users}'); ?&gt;</code></pre>
 
-						<p><small>Scary example courtesy of Sander at <a href="http://d8.sqndr.com/">d8.sqndr.com.</a></small></p>
+						<p class="centered"><small>Scary example courtesy of Sander at <a href="http://d8.sqndr.com/">d8.sqndr.com.</a></small></p>
 					</section>
 
 					<section>
 						<h2>Why all the changes?</h2>
-						<h3>Look at all the pretty things we get to use now!!</h3>
-						<ul>
+						<h3>Look at all the pretty things<br> we get to use now!!</h3>
+						<ul class="compact-list">
 							<li>HTML5</li>
 							<li>CSS3</li>
 							<li>Modern jQuery libraries</li>
 							<li>SMACSS</li>
 							<li>BEM</li>
-							<li>Responsive breakpoints</li>
+							<li>Standardized breakpoints</li>
 						</ul>
+						<img class="its-happening" width="312" height="213" src="images/its-happening.gif" alt="Ron Paul gif">
 					</section>
 
 					<section>
 						<h2>Why all the changes?</h2>
 						<h3>...but seriously</h3>
 						<ul>
-							<li>Separation of logic from appearance, leading to more modular (reusable) code.</li>
-							<li>More semantic CSS class names means leaner CSS and a more readable DOM</li>
+							<li>Separation of logic from appearance = more modular (reusable) code</li>
+							<li>More semantic CSS class names = leaner CSS and a more readable DOM</li>
 							<li>A general trend towards more extendable, modular, well-organized, better-performing code</li>
 						</ul>
 					</section>
@@ -164,15 +172,15 @@
 						<ol>
 							<li>Many contributed themes and modules don't having their 8.x branches ready.</li>
 						</ol>
-						<p>An intimidating note on the 8.x branch of a popular contrib theme:</p>
+						<p>A fun note on the 8.x branch of a popular contrib theme:</p>
 						<blockquote>This is a development branch. Please note that this branch is probably severely broken. It is strongly recommended to wait before using this branch or even creating issues regarding it.</blockquote>
 					</section>
 
 					<section>
 						<h2>Any disadvantages?</h2>
 						<ol start=2>
-							<li>Lack of documentation online</li>
-						</ol>
+							<li>Serious lack of documentation online</li>
+						</ol><br><br>
 						<p>Of the documentation that DOES exist, much of it is:</p>
 						<ul>
 							<li>Outdated, and marked as such.</li>
@@ -193,9 +201,10 @@
 				<section>
 					<h2>Create a theme folder</h2>
 					<img width="660" height="255" src="images/theme-folder-location.png" alt="Screenshot of theme folder location">
-					<p>Drupal core now resides in its own folder. Contributed and custom modules and themes are in the <code>modules</code> and <code>themes</code> folders, respectively.</p>
-					<p>My custom theme folder is called <code>mappy</code>.</p>
-					<p>Don't forget to create a <code>custom</code> folder for your custom theme!</p>
+					<ul>
+						<li>Drupal core now resides in its own folder. Contributed and custom modules and themes are in the <code>modules</code> and <code>themes</code> folders, respectively.</li>
+						<li>Don't forget to create a <code>custom</code> folder for your custom theme!</li>
+					</ul>
 				</section>
 
 				<section>
@@ -216,15 +225,18 @@ regions:
   sidebar: 'Sidebar'
   footer: 'Footer'
 					</code></pre>
-					<p class="centered">[theme-name].info becomes [theme-name].info.yml</p>
+					<p class="centered"><code>[theme-name].info</code> becomes <code>[theme-name].info.yml</code></p>
 				</section>
 
 				<section>
 					<h2>Dot info dot what?</h2>
-					<p>YAML is a data serialization language that contains key-value pairs.</p>
-					<p>Check out <a href="http://symfony.com/doc/current/components/yaml/yaml_format.html">Symfony's excellent writeup</a> 
-						on YAML syntax before getting started.</p>
-					<p>And mind your whitespace!</p>
+					<ul>
+						<li>YAML is a data serialization language.</li>
+						<li>Key-value pairs.</li>
+						<li>Check out <a href="http://symfony.com/doc/current/components/yaml/yaml_format.html">Symfony's excellent writeup</a> 
+							on YAML syntax before getting started.</li>
+						<li>And mind your whitespace!</li>
+					</ul>
 				</section>
 
 				<section>
@@ -250,9 +262,11 @@ regions:
 # mappy.info.yml
 base theme: classy
 					</code></pre>
-					<p>In D8, default classes are stripped from Drupal core and moved into the base theme Classy.</p>
-					<p>To avoid these default classes, simply don't base your theme on Classy.</p>
-					<p>But we want them because BEM is awesome! Check out <a href="http://csswizardry.com/2013/01/mindbemding-getting-your-head-round-bem-syntax/">this awesome introduction.</a>
+					<ul>
+						<li>In D8, default classes are stripped from Drupal core and moved into the base theme Classy.</li>
+						<li>To avoid these default classes, simply don't base your theme on Classy.</li>
+						<li>But we want them because BEM is awesome! Check out <a href="http://csswizardry.com/2013/01/mindbemding-getting-your-head-round-bem-syntax/">this awesome introduction.</a></li>
+					</ul>
 				</section>
 
 				<section>
@@ -263,8 +277,18 @@ libraries:
  - mappy/global-styling
  - mappy/leaflet
 					</code></pre>
-					<p>In D8, assets can be added in a few different ways: globally, per-template, per-page, and more.</p>
-					<p>Since this is a small site and we need our libraries on every page, we're adding them globally.</p>
+					<ul>
+						<li>In D8, assets can be added in a few different ways: globally, per-template, per-page, and more.</li>
+						<li>Since this is a small site and we need our libraries on every page, we're adding them globally.</li>
+					</ul>
+				</section>
+
+				<section>
+					<h2>Adding assets to your site</h2>
+					<ul>
+						<li>All libraries must be defined in your <code>.libraries.yml</code> file.</li>
+						<li>Visit <a href="https://www.drupal.org/developing/api/8/assets">drupal.org</a> for more information on methods for adding assets.</li>
+					</ul>
 				</section>
 
 				<section>
@@ -288,13 +312,6 @@ leaflet:
 					</code></pre>
 					<p>Note that jQuery is listed as a dependency of the Leaflet library. Since jQuery is no longer loaded automatically on every page, it must be explicitly required.</p>
 				</section>
-
-				<section>
-					<h2>Adding assets to your site</h2>
-					<p>No matter how you include your assets, they must be defined in your <code>.libraries.yml</code> file.</p>
-					<p>You probably won't add libraries globally very often. Visit <a href="https://www.drupal.org/developing/api/8/assets">drupal.org</a> for more information on methods for adding assets.</p>
-				</section>
-
 
 				<section>
 					<h2>Create a .breakpoints.yml file</h2>
@@ -324,27 +341,34 @@ mappy.wide:
 
 				<section>
 					<h2>Breakpoints</h2>
-					<p>Once you add a <code>.breakpoints.yml</code> file (and uninstall and reinstall your theme), the breakpoints you've set will be exposed in the admin UI.</p>
-					<p>These breakpoints can be used across various modules.</p>
+					<ul>
+						<li>Once you add a <code>.breakpoints.yml</code> file (and uninstall and reinstall your theme), the breakpoints you've set will be exposed in the admin UI.</li>
+						<li>These breakpoints can be used across various modules.</li>
+					</ul>
 				</section>
 
 				<section>
 					<h2>With these files set up, we now have a working custom theme!</h2>
+					<img width="391" height="247" src="images/stew.jpg" alt="Baby, you got a stew goin'!">
 				</section>
 				<!-- END SECTION 2 -->
 
 				<!-- SECTION 3: TWIG AND TWIG DEBUGGING -->
 				<section>
 					<h2>Template files</h2>
-					<p>In our theme's current state, we're using Classy's default template files.</p>
-					<p>If we want to override them, it's time to learn some Twig.</p>
+					<ul>
+						<li>In our theme's current state, we're using Classy's default template files.</li>
+						<li>If we want to override them, it's time to learn some Twig.</li>
+					</ul>
 				</section>
 
 				<section>
 					<h2>Intro to Twig</h2>
-					<p><a href="http://twig.sensiolabs.org/doc/templates.html">Twig</a> is a template engine with syntax similar to Django, Jinja, and Liquid.</p>
-					<p>It simplifies template creation with clean syntax and useful build-in filters, functions, and tags.</p>
-					<p>In a Drupal template file (now with the extention .html.twig), anything between curly braces is Twig.</p>
+					<ul>
+						<li><a href="http://twig.sensiolabs.org/doc/templates.html">Twig</a> is a template engine with syntax similar to Django, Jinja, and Liquid.</li>
+						<li>It simplifies template creation with clean syntax and useful build-in filters, functions, and tags.</li>
+						<li>In a Drupal template file (now with the extention .html.twig), anything between curly braces is Twig.</li>
+					</ul>
 				</section>
 
 				<section>
@@ -359,7 +383,7 @@ mappy.wide:
 					<h2>Printing variables and regions</h2>
 					<p>In D7 we render content like so:</p>
 					<pre><code data-trim>&lt;?php print render($page['sidebar']); ?&gt;</code></pre>
-					<p>Printing variables in D8 is as easy as including them insdie double curly braces:</p>
+					<p>Printing variables in D8 is as easy as including them inside double curly braces:</p>
 					<pre><code data-trim>
 // In page--front.html.twig
 // Print the sidebar region.
@@ -398,7 +422,7 @@ mappy.wide:
 					<pre><code data-trim>
 	// Run an ARIA label through t()
 
-  <nav class="tabs" role="navigation" aria-label="{{ 'Tabs'|t }}">
+  &lt;nav class="tabs" role="navigation" aria-label="{{ 'Tabs'|t }}"&gt;
 					</code></pre>
 				</section>
 
@@ -428,24 +452,7 @@ mappy.wide:
     </nav>
   {% endif %}
 					</code></pre>
-					<p>In Drupal, we’ll use the <code>if</code> statement quite often.</p>
-				</section>
-
-				<section>
-					<h2>The set tag</h2>
-					<p><code>Set</code> allows you to set and use variables throughout the template.</p>
-					<pre><code data-trim>
-// From Classy's block--system-menu-block.html.twig
-
-  {% set heading_id = attributes.id ~ '-menu'|clean_id %}
-  &lt;nav{{ attributes.addClass(classes) }} role="navigation" aria-labelledby="{{ heading_id }}"&gt;
-						</code></pre>
-					<p>In this example:</p>
-					<ul>
-						<li>The variable <code>heading_id</code> is set and then used as the <code>aria-labelledby</code> attribute.</li>
-						<li>The Twig concatenation character ~ is used</li>
-						<li>The string ‘-menu’ is passed through the <code>clean_id</code> filter.</li>
-					</ul>
+					<p>In template files, we’ll use the <code>if</code> statement quite often.</p>
 				</section>
 				
 				<section>
@@ -461,28 +468,20 @@ mappy.wide:
 						<li>Turn on Twig auto reload, meaning that Twig templates are automatically recompiled when the source code is changed</li>
 						<li>Disable Drupal’s render cache</li>
 					</ol>
-					<p>Note that one thing we do NOT need to do, surprisingly, is turn off Twig caching - turning on auto reload is enough.</p>
+					<p>You do NOT need turn off Twig caching - turning on auto reload is enough.</p>
 				</section>
 
 				<section>
 					<h2>Use settings.local.php</h2>
-					<p>First let's get a local settings file going.</p>
-					<p>Copy <code>sites/example.settings.local.php</code> to <code>sites/default</code> and rename to <code>settings.local.php</code>. Fill out your local database settings.</p>
+					<ol>
+						<li>Copy <code>sites/example.settings.local.php</code> to <code>sites/default</code> and rename to <code>settings.local.php</code>. Fill out your local database settings.</li>
+						<li>Uncomment the following at the bottom of <code>sites/default/settings.php</code>:</li>
+					</ul>
 
 					<pre><code class="php" data-trim>
-/**
- * Local database settings.
- */
-$databases['default']['default'] = array (
-  'database' => 'my_db_name',
-  'username' => 'my_username',
-  'password' => 'something',
-  'prefix' => '',
-  'host' => 'localhost',
-  'port' => '',
-  'namespace' => 'Drupal\\Core\\Database\\Driver\\mysql',
-  'driver' => 'mysql',
-);
+if (file_exists(__DIR__ . '/settings.local.php')) {
+  include __DIR__ . '/settings.local.php';
+}
 					</code></pre>
 				</section>
 
@@ -568,7 +567,7 @@ $settings['cache']['bins']['render'] = 'cache.backend.null';
 
 				<section>
 					<h2>Resources and further reading</h2>
-					<ul>
+					<ul class="compact-list">
 						<li><a href="http://savaslabs.com/2015/06/10/d8-theming-basics.html">A brilliant blog post about D8 theming (Savas)</a></li>
 						<li><a href="http://d8.sqndr.com/">D8 theming guide (Sander)</a></li>
 						<li><a href="http://symfony.com/doc/current/components/yaml/yaml_format.html">YAML formatting (Symfony)</a></li>
@@ -580,181 +579,13 @@ $settings['cache']['bins']['render'] = 'cache.backend.null';
 						<li><a href="https://drupalize.me/blog/201405/lets-debug-twig-drupal-8">Twig debugging and devel (drupalize.me)</a></li>
 					</ul>
 				</section>
+
+				<section>
+					<h2>Questions?</h2>
+				</section>
 				<!-- END SECTION 3 -->
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- 						<a href="#" class="navigate-down">
-							<img width="178" height="238" data-src="https://s3.amazonaws.com/hakim-static/reveal-js/arrow.png" alt="Down arrow">
-						</a> -->
-
-
-				<section data-markdown>
-					<script type="text/template">
-						## Markdown support
-
-						Write content using inline or external Markdown.
-						Instructions and more info available in the [readme](https://github.com/hakimel/reveal.js#markdown).
-
-						```
-						<section data-markdown>
-						  ## Markdown support
-
-						  Write content using inline or external Markdown.
-						  Instructions and more info available in the [readme](https://github.com/hakimel/reveal.js#markdown).
-						</section>
-						```
-					</script>
-				</section>
-
-				<section>
-					<section id="fragments">
-						<h2>Fragments</h2>
-						<p>Hit the next arrow...</p>
-						<p class="fragment">... to step through ...</p>
-						<p><span class="fragment">... a</span> <span class="fragment">fragmented</span> <span class="fragment">slide.</span></p>
-
-						<aside class="notes">
-							This slide has fragments which are also stepped through in the notes window.
-						</aside>
-					</section>
-					<section>
-						<h2>Fragment Styles</h2>
-						<p>There's different types of fragments, like:</p>
-						<p class="fragment grow">grow</p>
-						<p class="fragment shrink">shrink</p>
-						<p class="fragment fade-out">fade-out</p>
-						<p class="fragment current-visible">current-visible</p>
-						<p class="fragment highlight-red">highlight-red</p>
-						<p class="fragment highlight-blue">highlight-blue</p>
-					</section>
-				</section>
-
-
-				<section id="themes">
-					<h2>Themes</h2>
-					<p>
-						reveal.js comes with a few themes built in: <br>
-						<!-- Hacks to swap themes after the page has loaded. Not flexible and only intended for the reveal.js demo deck. -->
-						<a href="#" onclick="document.getElementById('theme').setAttribute('href','css/theme/black.css'); return false;">Black (default)</a> -
-						<a href="#" onclick="document.getElementById('theme').setAttribute('href','css/theme/white.css'); return false;">White</a> -
-						<a href="#" onclick="document.getElementById('theme').setAttribute('href','css/theme/league.css'); return false;">League</a> -
-						<a href="#" onclick="document.getElementById('theme').setAttribute('href','css/theme/sky.css'); return false;">Sky</a> -
-						<a href="#" onclick="document.getElementById('theme').setAttribute('href','css/theme/beige.css'); return false;">Beige</a> -
-						<a href="#" onclick="document.getElementById('theme').setAttribute('href','css/theme/simple.css'); return false;">Simple</a> <br>
-						<a href="#" onclick="document.getElementById('theme').setAttribute('href','css/theme/serif.css'); return false;">Serif</a> -
-						<a href="#" onclick="document.getElementById('theme').setAttribute('href','css/theme/blood.css'); return false;">Blood</a> -
-						<a href="#" onclick="document.getElementById('theme').setAttribute('href','css/theme/night.css'); return false;">Night</a> -
-						<a href="#" onclick="document.getElementById('theme').setAttribute('href','css/theme/moon.css'); return false;">Moon</a> -
-						<a href="#" onclick="document.getElementById('theme').setAttribute('href','css/theme/solarized.css'); return false;">Solarized</a>
-					</p>
-				</section>
-
-				<section>
-					<section data-background="#dddddd">
-						<h2>Slide Backgrounds</h2>
-						<p>
-							Set <code>data-background="#dddddd"</code> on a slide to change the background color. All CSS color formats are supported.
-						</p>
-						<a href="#" class="navigate-down">
-							<img width="178" height="238" data-src="https://s3.amazonaws.com/hakim-static/reveal-js/arrow.png" alt="Down arrow">
-						</a>
-					</section>
-					<section data-background="https://s3.amazonaws.com/hakim-static/reveal-js/image-placeholder.png">
-						<h2>Image Backgrounds</h2>
-						<pre><code>&lt;section data-background="image.png"&gt;</code></pre>
-					</section>
-					<section data-background="https://s3.amazonaws.com/hakim-static/reveal-js/image-placeholder.png" data-background-repeat="repeat" data-background-size="100px">
-						<h2>Tiled Backgrounds</h2>
-						<pre><code style="word-wrap: break-word;">&lt;section data-background="image.png" data-background-repeat="repeat" data-background-size="100px"&gt;</code></pre>
-					</section>
-					<section data-background-video="https://s3.amazonaws.com/static.slid.es/site/homepage/v1/homepage-video-editor.mp4,https://s3.amazonaws.com/static.slid.es/site/homepage/v1/homepage-video-editor.webm" data-background-color="#000000">
-						<div style="background-color: rgba(0, 0, 0, 0.9); color: #fff; padding: 20px;">
-							<h2>Video Backgrounds</h2>
-							<pre><code style="word-wrap: break-word;">&lt;section data-background-video="video.mp4,video.webm"&gt;</code></pre>
-						</div>
-					</section>
-					<section data-background="http://i.giphy.com/90F8aUepslB84.gif">
-						<h2>... and GIFs!</h2>
-					</section>
-				</section>
-
-
-
-				<section>
-					<h2>Pretty Code</h2>
-					<pre><code data-trim contenteditable>
-function linkify( selector ) {
-  if( supports3DTransforms ) {
-
-    var nodes = document.querySelectorAll( selector );
-
-    for( var i = 0, len = nodes.length; i &lt; len; i++ ) {
-      var node = nodes[i];
-
-      if( !node.className ) {
-        node.className += ' roll';
-      }
-    }
-  }
-}
-					</code></pre>
-					<p>Code syntax highlighting courtesy of <a href="http://softwaremaniacs.org/soft/highlight/en/description/">highlight.js</a>.</p>
-				</section>
-
-				<section>
-					<h2>Intergalactic Interconnections</h2>
-					<p>
-						You can link between slides internally,
-						<a href="#/2/3">like this</a>.
-					</p>
-				</section>
-
-				<section>
-					<h2>Speaker View</h2>
-					<p>There's a <a href="https://github.com/hakimel/reveal.js#speaker-notes">speaker view</a>. It includes a timer, preview of the upcoming slide as well as your speaker notes.</p>
-					<p>Press the <em>S</em> key to try it out.</p>
-
-					<aside class="notes">
-						Oh hey, these are some notes. They'll be hidden in your presentation, but you can see them if you open the speaker notes window (hit 's' on your keyboard).
-					</aside>
-				</section>
-
-				<section>
-					<h2>Export to PDF</h2>
-					<p>Presentations can be <a href="https://github.com/hakimel/reveal.js#pdf-export">exported to PDF</a>, here's an example:</p>
-					<iframe src="//www.slideshare.net/slideshow/embed_code/42840540" width="445" height="355" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:3px solid #666; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe>
-				</section>
-
-				<section>
-					<h2>Global State</h2>
-					<p>
-						Set <code>data-state="something"</code> on a slide and <code>"something"</code>
-						will be added as a class to the document element when the slide is open. This lets you
-						apply broader style changes, like switching the page background.
-					</p>
-				</section>
-
-				<section>
-					<h2>Take a Moment</h2>
-					<p>
-						Press B or . on your keyboard to pause the presentation. This is helpful when you're on stage and want to take distracting slides off the screen.
-					</p>
-				</section>
-
 			</div>
-
 		</div>
 
 		<script src="lib/js/head.min.js"></script>
@@ -769,6 +600,7 @@ function linkify( selector ) {
 				progress: true,
 				history: true,
 				center: true,
+				autoSlide: 0,
 
 				transition: 'slide', // none/fade/slide/convex/concave/zoom
 
@@ -782,6 +614,9 @@ function linkify( selector ) {
 					{ src: 'plugin/notes/notes.js', async: true }
 				]
 			});
+
+			// Turn autoSlide off
+			Reveal.configure({ autoSlide: 0 });
 
 		</script>
 
